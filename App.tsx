@@ -1,7 +1,8 @@
-import {Button, SafeAreaView} from 'react-native';
+import {Button, FlatList, SafeAreaView} from 'react-native';
 import React, {useState} from 'react';
 import InputModal from './src/components/Modals/InputModal';
 import {useAppSelector} from './src/hooks/hooks';
+import ListItem from './src/components/ListItem/ListItem';
 interface Props {}
 
 const App: React.FC<Props> = () => {
@@ -17,6 +18,11 @@ const App: React.FC<Props> = () => {
         color="#005d38"
       />
       <InputModal showModal={showModal} setShowModal={setShowModal} />
+      <FlatList
+        data={reduxStore}
+        renderItem={({item, index}) => <ListItem item={item} index={index} />}
+        keyExtractor={(item, index) => index.toString()}
+      />
     </SafeAreaView>
   );
 };
