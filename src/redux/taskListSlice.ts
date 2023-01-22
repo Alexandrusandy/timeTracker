@@ -1,14 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-
-interface Task {
-  id: string | number[];
-  name: string;
-  elapsedTime: number;
-  startTime: number;
-  pausedTime: number;
-  endTime: number;
-  totalPausedTime: number;
-}
+import {Task} from '../Interface/Models';
 
 interface TaskListState {
   tasks: Task[];
