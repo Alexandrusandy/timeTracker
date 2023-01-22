@@ -33,7 +33,7 @@ const ListItem: React.FC<Props> = ({item, index}) => {
   const time = `${hours}:${minutes % 60}:${seconds % 60}`;
 
   return (
-    <View style={{margin: 2, borderColor: 'grey', borderWidth: 2}}>
+    <View style={{margin: 2, borderBottomColor: 'grey', borderBottomWidth: 1}}>
       <View
         style={{
           flexDirection: 'row',
