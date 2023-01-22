@@ -1,10 +1,11 @@
-import {Text, View} from 'react-native';
-import React, {useEffect} from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {Task} from '../../Interface/Models';
 import {useAppDispatch, useAppSelector} from '../../hooks/hooks';
 import {updateTask} from '../../redux/taskListSlice';
 import StartButton from '../Buttons/StartButton';
 import StopButton from '../Buttons/StopButton';
+import TaskModal from '../Modals/TaskModal';
 interface Props {
   item: Task;
   index: number;
@@ -12,6 +13,8 @@ interface Props {
 const ListItem: React.FC<Props> = ({item, index}) => {
   const dispatch = useAppDispatch();
   const runningTask = useAppSelector(state => state.taskList.isRunning);
+
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   useEffect(() => {
     if (runningTask === item.id) {
@@ -33,22 +36,39 @@ const ListItem: React.FC<Props> = ({item, index}) => {
   const time = `${hours}:${minutes % 60}:${seconds % 60}`;
 
   return (
-    <View style={{margin: 2, borderBottomColor: 'grey', borderBottomWidth: 1}}>
+    <TouchableOpacity onPress={() => setShowModal(true)}>
       <View
         style={{
+          margin: 2,
+          borderBottomColor: 'grey',
+          borderBottomWidth: 1,
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
         }}>
-        <Text style={{fontSize: 20, padding: 5}}>{item.name}</Text>
-        <Text style={{fontSize: 18}}>{time}</Text>
-        {runningTask !== item.id ? (
-          <StartButton item={item} index={index} />
-        ) : (
-          <StopButton item={item} index={index} />
-        )}
+        <View style={{flex: 1}}>
+          <Text style={{fontSize: 20, padding: 5, textAlign: 'left'}}>
+            {item.name}
+          </Text>
+        </View>
+        <View style={{flex: 1}}>
+          <Text style={{fontSize: 18, textAlign: 'center'}}>{time}</Text>
+        </View>
+        <TaskModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          item={item}
+          index={index}
+        />
+        <View style={{flex: 1, alignItems: 'flex-end'}}>
+          {runningTask !== item.id ? (
+            <StartButton item={item} index={index} />
+          ) : (
+            <StopButton item={item} index={index} />
+          )}
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

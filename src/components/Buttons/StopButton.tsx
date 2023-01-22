@@ -3,8 +3,7 @@ import {useAppDispatch, useAppSelector} from '../../hooks/hooks';
 import {setIsRunning, updateTask} from '../../redux/taskListSlice';
 import {TouchableOpacity, Text} from 'react-native';
 import {Task} from '../../Interface/Models';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faStop} from '@fortawesome/free-solid-svg-icons';
+import {StopIcon} from '../Icons/Icons';
 interface Props {
   item: Task;
   index: number;
@@ -30,7 +29,7 @@ const StopButton: React.FC<Props> = ({item, index}) => {
       style={{flexDirection: 'row', alignItems: 'center'}}
       onPress={handleStop}>
       <Text style={{fontSize: 20, color: '#b42400'}}>Stop</Text>
-      <FontAwesomeIcon icon={faStop} size={30} color="#b42400" />
+      <StopIcon />
     </TouchableOpacity>
   );
 };

@@ -3,8 +3,7 @@ import {useAppDispatch, useAppSelector} from '../../hooks/hooks';
 import {setIsRunning, updateTask} from '../../redux/taskListSlice';
 import {Alert, TouchableOpacity, Text} from 'react-native';
 import {Task} from '../../Interface/Models';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faPlay} from '@fortawesome/free-solid-svg-icons';
+import {PlayIcon} from '../Icons/Icons';
 interface Props {
   item: Task;
   index: number;
@@ -43,8 +42,7 @@ const StartButton: React.FC<Props> = ({item, index}) => {
       ) : (
         <Text style={{fontSize: 18, color: '#078955'}}>Resume</Text>
       )}
-
-      <FontAwesomeIcon icon={faPlay} size={30} color="#078955" />
+      <PlayIcon />
     </TouchableOpacity>
   );
 };
