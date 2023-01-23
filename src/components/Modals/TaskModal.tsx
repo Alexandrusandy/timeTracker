@@ -48,20 +48,24 @@ const TaskModal: React.FC<Props> = ({showModal, setShowModal, item, index}) => {
           <Text style={styles.modalText}>Ending time: {endTime}</Text>
           <ResetButton item={item} index={index} />
           <View style={styles.rowCenter}>
-            <Button
-              onPress={() => {
-                setShowModal(false);
-              }}
-              title="Close"
-              color="#005d38"
-            />
-            <Button
-              onPress={() => {
-                handleRemove();
-              }}
-              title="Remove Task"
-              color="#c53b00"
-            />
+            <View style={styles.buttonContainer}>
+              <Button
+                onPress={() => {
+                  setShowModal(false);
+                }}
+                title="Close"
+                color="#005d38"
+              />
+            </View>
+            <View style={styles.buttonContainer}>
+              <Button
+                onPress={() => {
+                  handleRemove();
+                }}
+                title="Remove Task"
+                color="#c53b00"
+              />
+            </View>
           </View>
         </View>
       </Modal>

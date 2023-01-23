@@ -56,12 +56,20 @@ const InputModal: React.FC<Props> = ({showModal, setShowModal}) => {
             style={styles.textInput}
           />
           <View style={styles.rowCenter}>
-            <Button title="Save" color="#3367f6" onPress={() => handleSave()} />
-            <Button
-              title="Cancel"
-              color="#474747"
-              onPress={() => closeModal()}
-            />
+            <View style={styles.buttonContainer}>
+              <Button
+                title="Save"
+                color="#3367f6"
+                onPress={() => handleSave()}
+              />
+            </View>
+            <View style={styles.buttonContainer}>
+              <Button
+                title="Cancel"
+                color="#474747"
+                onPress={() => closeModal()}
+              />
+            </View>
           </View>
         </View>
       </Modal>

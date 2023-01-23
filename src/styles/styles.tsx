@@ -2,8 +2,7 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   modal: {
-    backgroundColor: 'white',
-    opacity: 0.8,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
   },
   modalContainer: {
     marginHorizontal: 30,
@@ -17,7 +16,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.41,
     shadowRadius: 9.11,
-    elevation: 14,
+    elevation: 12,
   },
   title: {
     fontSize: 18,
@@ -60,6 +59,9 @@ const styles = StyleSheet.create({
   startButton: {fontSize: 18, color: '#078955'},
   stopButton: {fontSize: 18, color: '#b42400'},
   resetButton: {fontSize: 20, color: '#b42400', padding: 5},
+  buttonContainer: {
+    margin: 5,
+  },
 });
 
 export default styles;
