@@ -5,6 +5,7 @@ import {Task} from '../../Interface/Models';
 import {useAppDispatch, useAppSelector} from '../../hooks/hooks';
 import {removeTask, setIsRunning} from '../../redux/taskListSlice';
 import ResetButton from '../Buttons/ResetButton';
+import styles from '../../styles/styles';
 interface Props {
   showModal: boolean;
   setShowModal: (showModal: boolean) => void;
@@ -40,31 +41,14 @@ const TaskModal: React.FC<Props> = ({showModal, setShowModal, item, index}) => {
   };
   return (
     <View>
-      <Modal
-        isVisible={showModal}
-        style={{
-          backgroundColor: 'white',
-          opacity: 0.8,
-        }}>
-        <View
-          style={{
-            marginHorizontal: 30,
-            borderRadius: 5,
-            padding: 10,
-            borderColor: 'black',
-            borderWidth: 2,
-            justifyContent: 'center',
-            backgroundColor: '#f2f6db',
-          }}>
-          <Text style={{textAlign: 'center', fontSize: 20}}>
-            Task name: {item.name}
-          </Text>
-          <Text style={{fontSize: 16}}>Starting time:{startTime}</Text>
-          <Text style={{fontSize: 16}}>Tracked time: {time}</Text>
-          <Text style={{fontSize: 16}}>Ending time: {endTime}</Text>
-          <View style={{flexDirection: 'row', justifyContent: 'center'}}></View>
+      <Modal isVisible={showModal} style={styles.modal}>
+        <View style={styles.modalContainer}>
+          <Text style={styles.title}>Task name: {item.name}</Text>
+          <Text style={styles.modalText}>Starting time:{startTime}</Text>
+          <Text style={styles.modalText}>Tracked time: {time}</Text>
+          <Text style={styles.modalText}>Ending time: {endTime}</Text>
           <ResetButton item={item} index={index} />
-          <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+          <View style={styles.rowCenter}>
             <Button
               onPress={() => {
                 setShowModal(false);

@@ -4,6 +4,7 @@ import {setIsRunning, updateTask} from '../../redux/taskListSlice';
 import {Alert, TouchableOpacity, Text} from 'react-native';
 import {Task} from '../../Interface/Models';
 import {PlayIcon} from '../Icons/Icons';
+import styles from '../../styles/styles';
 interface Props {
   item: Task;
   index: number;
@@ -30,17 +31,16 @@ const StartButton: React.FC<Props> = ({item, index}) => {
 
       dispatch(setIsRunning(item.id));
     } else {
+      // eslint-disable-next-line quotes
       Alert.alert(`you can't start a new task when another is running`);
     }
   };
   return (
-    <TouchableOpacity
-      style={{flexDirection: 'row', alignItems: 'center'}}
-      onPress={handleStart}>
+    <TouchableOpacity style={styles.rowCenter} onPress={handleStart}>
       {item.startTime === 0 ? (
-        <Text style={{fontSize: 20, color: '#078955'}}>Start</Text>
+        <Text style={styles.startButton}>Start</Text>
       ) : (
-        <Text style={{fontSize: 18, color: '#078955'}}>Resume</Text>
+        <Text style={styles.startButton}>Resume</Text>
       )}
       <PlayIcon />
     </TouchableOpacity>

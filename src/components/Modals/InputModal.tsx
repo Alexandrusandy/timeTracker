@@ -5,6 +5,7 @@ import {useAppDispatch} from '../../hooks/hooks';
 import {Task} from '../../Interface/Models';
 import {addTask} from '../../redux/taskListSlice';
 import uuid from 'react-native-uuid';
+import styles from '../../styles/styles';
 
 interface Props {
   showModal: boolean;
@@ -29,7 +30,7 @@ const InputModal: React.FC<Props> = ({showModal, setShowModal}) => {
       setShowModal(false);
       setName('');
     } else {
-      Alert.alert(`enter a name for task`);
+      Alert.alert('enter a name for task');
     }
   };
   const closeModal = () => {
@@ -37,31 +38,18 @@ const InputModal: React.FC<Props> = ({showModal, setShowModal}) => {
     setName('');
   };
   return (
+    // eslint-disable-next-line react-native/no-inline-styles
     <View style={{flex: 1}}>
-      <Modal
-        isVisible={showModal}
-        style={{
-          backgroundColor: 'white',
-          opacity: 0.8,
-        }}>
-        <View
-          style={{
-            marginHorizontal: 30,
-            borderRadius: 5,
-            padding: 10,
-            borderColor: 'black',
-            borderWidth: 2,
-            justifyContent: 'center',
-            backgroundColor: '#f2f6db',
-          }}>
-          <Text style={{textAlign: 'center'}}>Add new task</Text>
+      <Modal isVisible={showModal} style={styles.modal}>
+        <View style={styles.modalContainer}>
+          <Text style={styles.title}>Add new task</Text>
           <TextInput
             onChangeText={setName}
             value={name}
             placeholder="task name"
-            style={{height: 40, margin: 12, borderWidth: 1, padding: 10}}
+            style={styles.textInput}
           />
-          <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+          <View style={styles.rowCenter}>
             <Button title="Save" color="#3367f6" onPress={() => handleSave()} />
             <Button
               title="Cancel"

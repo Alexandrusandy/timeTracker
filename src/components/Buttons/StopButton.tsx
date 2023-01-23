@@ -4,6 +4,7 @@ import {setIsRunning, updateTask} from '../../redux/taskListSlice';
 import {TouchableOpacity, Text} from 'react-native';
 import {Task} from '../../Interface/Models';
 import {StopIcon} from '../Icons/Icons';
+import styles from '../../styles/styles';
 interface Props {
   item: Task;
   index: number;
@@ -25,10 +26,8 @@ const StopButton: React.FC<Props> = ({item, index}) => {
   };
 
   return (
-    <TouchableOpacity
-      style={{flexDirection: 'row', alignItems: 'center'}}
-      onPress={handleStop}>
-      <Text style={{fontSize: 20, color: '#b42400'}}>Stop</Text>
+    <TouchableOpacity style={styles.rowCenter} onPress={handleStop}>
+      <Text style={styles.stopButton}>Stop</Text>
       <StopIcon />
     </TouchableOpacity>
   );

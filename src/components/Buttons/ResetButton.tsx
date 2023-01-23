@@ -4,6 +4,7 @@ import {setIsRunning, updateTask} from '../../redux/taskListSlice';
 import {TouchableOpacity, Text} from 'react-native';
 import {Task} from '../../Interface/Models';
 import {ResetIcon} from '../Icons/Icons';
+import styles from '../../styles/styles';
 interface Props {
   item: Task;
   index: number;
@@ -27,15 +28,9 @@ const ResetButton: React.FC<Props> = ({item, index}) => {
   };
 
   return (
-    <TouchableOpacity
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-      onPress={handleReset}>
+    <TouchableOpacity style={styles.rowCenter} onPress={handleReset}>
       <ResetIcon />
-      <Text style={{fontSize: 20, color: '#b42400'}}>Reset Time</Text>
+      <Text style={styles.resetButton}>Reset Time</Text>
     </TouchableOpacity>
   );
 };

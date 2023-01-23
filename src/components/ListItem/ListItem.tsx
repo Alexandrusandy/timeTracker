@@ -6,6 +6,8 @@ import {updateTask} from '../../redux/taskListSlice';
 import StartButton from '../Buttons/StartButton';
 import StopButton from '../Buttons/StopButton';
 import TaskModal from '../Modals/TaskModal';
+import styles from '../../styles/styles';
+import formatTime from '../../hooks/formatTime';
 interface Props {
   item: Task;
   index: number;
@@ -29,30 +31,16 @@ const ListItem: React.FC<Props> = ({item, index}) => {
     }
   }, [runningTask, item, dispatch, index]);
 
-  const seconds = Math.floor(item.elapsedTime / 1000);
-
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const time = `${hours}:${minutes % 60}:${seconds % 60}`;
+  const time = formatTime(item.elapsedTime);
 
   return (
     <TouchableOpacity onPress={() => setShowModal(true)}>
-      <View
-        style={{
-          margin: 2,
-          borderBottomColor: 'grey',
-          borderBottomWidth: 1,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}>
-        <View style={{flex: 1}}>
-          <Text style={{fontSize: 20, padding: 5, textAlign: 'left'}}>
-            {item.name}
-          </Text>
+      <View style={styles.itemContainer}>
+        <View style={styles.flex1}>
+          <Text style={styles.itemTitle}>{item.name}</Text>
         </View>
-        <View style={{flex: 1}}>
-          <Text style={{fontSize: 18, textAlign: 'center'}}>{time}</Text>
+        <View style={styles.flex1}>
+          <Text style={styles.itemTime}>{time}</Text>
         </View>
         <TaskModal
           showModal={showModal}
@@ -60,7 +48,7 @@ const ListItem: React.FC<Props> = ({item, index}) => {
           item={item}
           index={index}
         />
-        <View style={{flex: 1, alignItems: 'flex-end'}}>
+        <View style={[styles.flex1, styles.alignEnd]}>
           {runningTask !== item.id ? (
             <StartButton item={item} index={index} />
           ) : (
