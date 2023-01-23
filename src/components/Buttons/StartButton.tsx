@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {useAppDispatch, useAppSelector} from '../../hooks/hooks';
 import {setIsRunning, updateTask} from '../../redux/taskListSlice';
 import {Alert, TouchableOpacity, Text} from 'react-native';
@@ -12,36 +12,28 @@ interface Props {
 const StartButton: React.FC<Props> = ({item, index}) => {
   const runningTask = useAppSelector(state => state.taskList.isRunning);
   const dispatch = useAppDispatch();
-  const handleStart = () => {
+  // useCallback hook to make sure the handleStart function only gets recreated when one of the dependencies changes.
+  const handleStart = useCallback(() => {
     if (runningTask === '') {
-      let newTaskList = {...item};
-      if (newTaskList.startTime === 0) {
-        let date = Date.now();
-        newTaskList.startTime = date;
-
-        dispatch(updateTask({index: index, updatedTask: newTaskList}));
+      let updatedTask = {...item};
+      if (updatedTask.startTime === 0) {
+        updatedTask.startTime = Date.now();
+      } else if (updatedTask.pausedTime !== 0) {
+        updatedTask.totalPausedTime += Date.now() - updatedTask.pausedTime;
       }
-      if (newTaskList.pausedTime !== 0) {
-        let date = Date.now();
-        newTaskList.totalPausedTime =
-          newTaskList.totalPausedTime + (date - newTaskList.pausedTime);
-
-        dispatch(updateTask({index: index, updatedTask: newTaskList}));
-      }
-
+      dispatch(updateTask({index, updatedTask: updatedTask}));
       dispatch(setIsRunning(item.id));
     } else {
-      // eslint-disable-next-line quotes
-      Alert.alert(`you can't start a new task when another is running`);
+      Alert.alert("You can't start a new task when another is running");
     }
-  };
+  }, [dispatch, item, index, runningTask]);
+  // useMemo hook to make sure the text only gets recalculated when the item prop changes
+  const text = useMemo(() => {
+    return item.startTime === 0 ? 'Start' : 'Resume';
+  }, [item]);
   return (
     <TouchableOpacity style={styles.rowCenter} onPress={handleStart}>
-      {item.startTime === 0 ? (
-        <Text style={styles.startButton}>Start</Text>
-      ) : (
-        <Text style={styles.startButton}>Resume</Text>
-      )}
+      <Text style={styles.startButton}>{text}</Text>
       <PlayIcon />
     </TouchableOpacity>
   );

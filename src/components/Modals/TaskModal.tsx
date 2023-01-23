@@ -1,11 +1,12 @@
 import {Button, Text, View} from 'react-native';
-import React from 'react';
+import React, {useCallback, useMemo} from 'react';
 import Modal from 'react-native-modal';
 import {Task} from '../../Interface/Models';
 import {useAppDispatch, useAppSelector} from '../../hooks/hooks';
 import {removeTask, setIsRunning} from '../../redux/taskListSlice';
 import ResetButton from '../Buttons/ResetButton';
 import styles from '../../styles/styles';
+import formatTime from '../../hooks/formatTime';
 interface Props {
   showModal: boolean;
   setShowModal: (showModal: boolean) => void;
@@ -25,20 +26,18 @@ const TaskModal: React.FC<Props> = ({showModal, setShowModal, item, index}) => {
   if (item.endTime > 0) {
     endTime = new Date(item.endTime).toLocaleString();
   }
+  // only recalculates if the totalElapsedTime changes
+  const time = useMemo(() => formatTime(item.elapsedTime), [item.elapsedTime]);
 
-  const seconds = Math.floor(item.elapsedTime / 1000);
-
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const time = `${hours}:${minutes % 60}:${seconds % 60}`;
-
-  const handleRemove = () => {
+  // useCallback hook to make sure the handleRemove function only gets recreated when one of the dependencies changes.
+  const handleRemove = useCallback(() => {
     if (runningTask === item.id) {
       dispatch(setIsRunning(''));
     }
     dispatch(removeTask(index));
     setShowModal(false);
-  };
+  }, [dispatch, index, item.id, runningTask, setShowModal]);
+
   return (
     <View>
       <Modal isVisible={showModal} style={styles.modal}>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {useAppDispatch, useAppSelector} from '../../hooks/hooks';
 import {setIsRunning, updateTask} from '../../redux/taskListSlice';
 import {TouchableOpacity, Text} from 'react-native';
@@ -12,18 +12,16 @@ interface Props {
 const StopButton: React.FC<Props> = ({item, index}) => {
   const runningTask = useAppSelector(state => state.taskList.isRunning);
   const dispatch = useAppDispatch();
-
-  const handleStop = () => {
+  // useCallback hook to make sure the handleStop function only gets recreated when one of the dependencies changes.
+  const handleStop = useCallback(() => {
     if (runningTask === item.id) {
-      let newTaskList = {...item};
-      let date = Date.now();
-      newTaskList.endTime = date;
-      // newTaskList.elapsedTime = elapsedTime;
-      newTaskList.pausedTime = date;
-      dispatch(updateTask({index: index, updatedTask: newTaskList}));
+      let updatedTask = {...item};
+      updatedTask.endTime = Date.now();
+      updatedTask.pausedTime = Date.now();
+      dispatch(updateTask({index, updatedTask: updatedTask}));
       dispatch(setIsRunning(''));
     }
-  };
+  }, [dispatch, item, index, runningTask]);
 
   return (
     <TouchableOpacity style={styles.rowCenter} onPress={handleStop}>

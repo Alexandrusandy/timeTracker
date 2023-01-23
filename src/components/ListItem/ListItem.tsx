@@ -1,5 +1,5 @@
 import {Text, TouchableOpacity, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Task} from '../../Interface/Models';
 import {useAppDispatch, useAppSelector} from '../../hooks/hooks';
 import {updateTask} from '../../redux/taskListSlice';
@@ -15,23 +15,27 @@ interface Props {
 const ListItem: React.FC<Props> = ({item, index}) => {
   const dispatch = useAppDispatch();
   const runningTask = useAppSelector(state => state.taskList.isRunning);
-
   const [showModal, setShowModal] = useState<boolean>(false);
-
+  // useEffect to set an interval and update the elapsed time for the running task
   useEffect(() => {
     if (runningTask === item.id) {
       const intervalId = setInterval(() => {
+        // get current time
         let date = new Date();
-        let newTaskList = {...item};
-        newTaskList.elapsedTime =
-          date.getTime() - newTaskList.startTime - newTaskList.totalPausedTime;
-        dispatch(updateTask({index: index, updatedTask: newTaskList}));
+        // create a new object with the current task data
+        let updatedTask = {...item};
+        const {startTime, totalPausedTime} = updatedTask;
+        // calculate new elapsedTime
+        updatedTask.elapsedTime = date.getTime() - startTime - totalPausedTime;
+        //dispatch to update the task
+        dispatch(updateTask({index: index, updatedTask: updatedTask}));
       }, 1000);
       return () => clearInterval(intervalId);
     }
   }, [runningTask, item, dispatch, index]);
 
-  const time = formatTime(item.elapsedTime);
+  // useMemo to only recalculate time if item.elapsedTime changes
+  const time = useMemo(() => formatTime(item.elapsedTime), [item.elapsedTime]);
 
   return (
     <TouchableOpacity onPress={() => setShowModal(true)}>
@@ -60,4 +64,4 @@ const ListItem: React.FC<Props> = ({item, index}) => {
   );
 };
 
-export default ListItem;
+export default React.memo(ListItem);

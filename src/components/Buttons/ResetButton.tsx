@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {useAppDispatch, useAppSelector} from '../../hooks/hooks';
 import {setIsRunning, updateTask} from '../../redux/taskListSlice';
 import {TouchableOpacity, Text} from 'react-native';
@@ -13,19 +13,21 @@ const ResetButton: React.FC<Props> = ({item, index}) => {
   const runningTask = useAppSelector(state => state.taskList.isRunning);
   const dispatch = useAppDispatch();
 
-  const handleReset = () => {
+  // useCallback hook to make sure the handleReset function only gets recreated when one of the dependencies changes.
+  const handleReset = useCallback(() => {
     if (runningTask === item.id) {
       dispatch(setIsRunning(''));
     }
-
-    let newTaskList = {...item};
-    newTaskList.startTime = 0;
-    newTaskList.elapsedTime = 0;
-    newTaskList.endTime = 0;
-    newTaskList.pausedTime = 0;
-    newTaskList.totalPausedTime = 0;
-    dispatch(updateTask({index: index, updatedTask: newTaskList}));
-  };
+    const updatedTask = {
+      ...item,
+      startTime: 0,
+      elapsedTime: 0,
+      endTime: 0,
+      pausedTime: 0,
+      totalPausedTime: 0,
+    };
+    dispatch(updateTask({index, updatedTask}));
+  }, [dispatch, item, index, runningTask]);
 
   return (
     <TouchableOpacity style={styles.rowCenter} onPress={handleReset}>

@@ -1,21 +1,23 @@
 import {Button, FlatList, SafeAreaView, Text} from 'react-native';
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import InputModal from './src/components/Modals/InputModal';
 import {useAppSelector} from './src/hooks/hooks';
 import ListItem from './src/components/ListItem/ListItem';
 import formatTime from './src/hooks/formatTime';
 import styles from './src/styles/styles';
+
 interface Props {}
 
 const App: React.FC<Props> = () => {
   const storeData = useAppSelector(state => state.taskList.tasks);
-  // console.log('reduxStore', reduxStore);
   const [showModal, setShowModal] = useState<boolean>(false);
-  const totalElapsedTime = storeData.reduce(
-    (acc, current) => acc + current.elapsedTime,
-    0,
+  // only recalculates if the storeData changes
+  const totalElapsedTime = useMemo(
+    () => storeData.reduce((acc, current) => acc + current.elapsedTime, 0),
+    [storeData],
   );
-  const time = formatTime(totalElapsedTime);
+  // only recalculates if the totalElapsedTime changes
+  const time = useMemo(() => formatTime(totalElapsedTime), [totalElapsedTime]);
   return (
     <SafeAreaView>
       <Button
